@@ -49,8 +49,8 @@ time_series =[int(i) for i in t.read().split()]
 t.close()
 # 建模
 
-model_gen = DtmModel(dtm_path, corpus, time_series, num_topics=num_topics,
-                 lda_max_em_iter=1, initialize_lda=True)
+model_gen = DtmModel(dtm_path, corpus, time_series, num_topics=num_topics
+                 , initialize_lda=True)
 
 # model_gen = LdaSeqModel(corpus = corpus, time_slice=time_series, id2word = dictionary, num_topics = num_topics)
 
