@@ -9,6 +9,7 @@ Created on Sun Oct 29 19:32:54 2017
 
 
 import logging
+from gensim import corpora, models
 from gensim.models.wrappers.dtmmodel import DtmModel
 #from gensim.models.ldaseqmodel import LdaSeqModel 
 #import numpy as np

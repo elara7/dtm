@@ -23,7 +23,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.debug("test")
 
-
+print 'load package done'
 
 # 工作路径
 if sys.platform == 'darwin':
@@ -39,6 +39,8 @@ elif sys.platform == 'linux2':
 else:
     print 'System does not meet'
 
+print 'set path done'
+
 # 停用词表
 
 f=open(main_path+'corpus/stop_word')
@@ -46,6 +48,8 @@ stop_word=f.read()
 f.close()
 stop_word = stop_word.split('sperator')
 stop_word = [unicode(i,'utf8') for i in stop_word]
+
+print 'load stop word list done'
 
 # 读取分词数据,排除停止词，汇总语料库，content
 i=0
@@ -61,12 +65,15 @@ while 1:
         print 'read raw content done'
         break
 
+
 #保存content
 w=codecs.open(main_path+'corpus/content.txt','w','utf8')
 for i in content:
     k=' '.join([j for j in i])
     w.write(k+"\n")
 w.close()
+
+print 'save content done'
 
 # 构建字典(使用完整词库）
 dictionary_all = corpora.Dictionary(content)
@@ -93,10 +100,12 @@ for i in content_tfidf: #对每篇文章
             temp.append(dictionary_all[j[0]])
     content_train.append(temp)
 
+print 'build content_train done'
+	
 # 划分时间段
 raw_content = pd.read_csv(main_path + 'corpus/raw/content_data.csv')
 
-f1_y,f1_m = datetime.datetime.strptime(raw_content.ix[0,3],'%Y/%m/%d %H:%M:%S').timetuple()[0:2]
+f1_y,f1_m = datetime.datetime.strptime(raw_content.iloc[0,3],'%Y/%m/%d %H:%M:%S').timetuple()[0:2]
 s=1
 time_series=[]
 for i in range(len(raw_content)-1):
@@ -112,11 +121,15 @@ for i in range(len(raw_content)-1):
         f1_m = f2_m
 time_series.append(s)
 
+print 'time series done'
+
 # 保存时间分割点
 t=codecs.open(main_path+'corpus/dtm_o/time_series.txt','w','utf8')
 k=' '.join([str(j) for j in time_series])
 t.write(k)
 t.close()
+
+print 'time series saving done'
 
 # dtm语料库转化
 class DTMcorpus(corpora.textcorpus.TextCorpus):
@@ -134,15 +147,14 @@ corpora.BleiCorpus.serialize(main_path + 'corpus/dtm_o/corpus.lda-c', corpus)
 # fastdtm语料库转化
 
 dictionary = corpora.Dictionary(content_train)
-dictionary.id2token[1]
-dictionary.token2id[dictionary.id2token[1]]
 
 
 # vocabulary_file
 d=codecs.open(main_path+'corpus/fastdtm/vocabulary_file.txt','w','utf8')
-d.write('\n'.join(dictionary.id2token[j] for j in range(len(dictionary))))
+d.write('\n'.join(dictionary[j] for j in range(len(dictionary))))
 d.close()
 
+print 'vocabulary_file done'
 #doc
 
 docs = [' '.join([str(word_1) for word_1 in [dictionary.token2id[word] for word in doc]])  for doc in content_train]
@@ -156,6 +168,7 @@ for count_i in range(len(time_series)):
     fd.close()
     start = end
 
+print 'doc done'
 
 
 
