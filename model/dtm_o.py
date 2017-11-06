@@ -53,8 +53,9 @@ model_gen = DtmModel(dtm_path, corpus, time_series, num_topics=num_topics
                  , initialize_lda=True)
 
 # model_gen = LdaSeqModel(corpus = corpus, time_slice=time_series, id2word = dictionary, num_topics = num_topics)
-
+print 'model training finish'
 model_gen.save(main_path + 'result/dtm_o_' + sys.platform + '_topic_' + str(num_topics) + '.model')
+print 'model saving finish'
 #model1 = DtmModel.load('topic1.model')
 #topics = model1.show_topic(topicid=0, time=0, topn=10)
 
