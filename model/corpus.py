@@ -31,9 +31,9 @@ if sys.platform == 'darwin':
     dtm_path = main_path + 'lib/dtm/main_osx'
     fastdtm_path = main_path + 'lib/fastdtm/FastDTM_osx'
 elif sys.platform == 'win32':
-    main_path = 'C:/Users/elara/Desktop/dtm/' #win
+    main_path = 'D:/Desktop/dtm/' #win
 elif sys.platform == 'linux2':
-	main_path = '/mnt/c/Users/elara/Desktop/dtm/' 
+	main_path = '/mnt/d/Desktop/dtm/' 
 	dtm_path = main_path + 'lib/dtm/main_linux'
 	fastdtm_path = main_path + 'lib/fastdtm/FastDTM_linux'
 else:
@@ -101,7 +101,16 @@ for i in content_tfidf: #对每篇文章
     content_train.append(temp)
 
 print 'build content_train done'
-	
+
+#保存content
+w=codecs.open(main_path+'corpus/content_train.txt','w','utf8')
+for i in content_train:
+    k=' '.join([j for j in i])
+    w.write(k+"\n")
+w.close()
+
+print 'save content_train done'
+
 # 划分时间段
 raw_content = pd.read_csv(main_path + 'corpus/raw/content_data.csv')
 

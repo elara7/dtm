@@ -9,7 +9,7 @@ Created on Sun Oct 29 19:32:54 2017
 
 
 import logging
-from gensim import corpora, models
+from gensim import corpora
 from gensim.models.wrappers.dtmmodel import DtmModel
 #from gensim.models.ldaseqmodel import LdaSeqModel 
 #import numpy as np
@@ -44,7 +44,7 @@ if use_default != 'Y':
 	while 1:
 		print 'which parameter need to be changed?'
 		key_para=raw_input()
-		if key_para is None:
+		if key_para =='':
 			print 'config done'
 			break
 		print 'input the value'
@@ -76,7 +76,33 @@ else:
 
 # 读取语料
 
-corpus = corpora.BleiCorpus(main_path + 'corpus/dtm_o/corpus.lda-c')
+#corpus = corpora.BleiCorpus(main_path + 'corpus/dtm_o/corpus.lda-c')
+
+content_train=[]
+t=open(main_path+'corpus/content_train.txt','r')
+while 1:
+	temp = t.readline()
+	if temp == '':
+		break
+	content_train.append([unicode(i,'utf8') for i in temp.split()])
+t.close()
+
+print len(content_train)
+
+print 'load corpus done'
+
+# dtm语料库转化
+class DTMcorpus(corpora.textcorpus.TextCorpus):
+
+    def get_texts(self):
+        return self.input
+
+    def __len__(self):
+        return len(self.input)
+
+corpus = DTMcorpus(input = content_train)    
+
+print 'convert corpus done'
 
 # 读取时间段
 
@@ -87,7 +113,7 @@ t.close()
 
 model_gen = DtmModel(dtm_path, corpus=corpus, time_slices=time_series, mode=para['mode'], 
 				 model=para['model'], num_topics=para['num_topics'], 
-				 id2word=None, prefix=None, 
+				 id2word=corpus.dictionary, prefix=None, 
 				 lda_sequence_min_iter=para['lda_sequence_min_iter'], 
 				 lda_sequence_max_iter=para['lda_sequence_max_iter'], 
 				 lda_max_em_iter=para['lda_max_em_iter'], 
@@ -99,7 +125,7 @@ model_gen = DtmModel(dtm_path, corpus=corpus, time_slices=time_series, mode=para
 
 # model_gen = LdaSeqModel(corpus = corpus, time_slice=time_series, id2word = dictionary, num_topics = num_topics)
 print 'model training finish'
-model_gen.save(main_path + 'result/dtm_o_' + sys.platform + '_topic_' + str(num_topics) + '.model')
+model_gen.save(main_path + 'result/dtm_o_' + sys.platform + '_topic_' + str(para['num_topics']) + '.model')
 print 'model saving finish'
 #model1 = DtmModel.load('topic1.model')
 #topics = model1.show_topic(topicid=0, time=0, topn=10)
