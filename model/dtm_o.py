@@ -29,10 +29,10 @@ if sys.platform == 'darwin':
     dtm_path = main_path + 'lib/dtm/main_osx'
     fastdtm_path = main_path + 'lib/fastdtm/FastDTM_osx'
 elif sys.platform == 'win32':
-    main_path = 'C:/Users/elara/Desktop/dtm/' #win
+    main_path = 'D:/Desktop/dtm/' #win
     dtm_path = main_path + 'lib/dtm/dtm-win64.exe'
 elif sys.platform == 'linux2':
-	main_path = '/mnt/c/Users/elara/Desktop/dtm/' 
+	main_path = '/mnt/d/Desktop/dtm/' 
 	dtm_path = main_path + 'lib/dtm/main_linux'
 	fastdtm_path = main_path + 'lib/fastdtm/FastDTM_linux'
 else:
