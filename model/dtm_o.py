@@ -21,8 +21,44 @@ logging.debug("test")
 
 
 #参数
-num_topics = int(sys.argv[1])
+para={
+	'num_topics':100,
+	'mode':'fit',
+	'model':'dtm',
+	'id2word':None,
+	'prefix':None,
+	'lda_sequence_min_iter':6,
+	'lda_sequence_max_iter':20,
+	'lda_max_em_iter':10,
+	'alpha':0.01,
+	'top_chain_var':0.005,
+	'rng_seed':0,
+	'initialize_lda':True
+}
 
+print 'input topic num'
+para['num_topics'] = int(raw_input())
+print 'use default?(Y/N)'
+use_default = raw_input()
+if use_default != 'Y':
+	while 1:
+		print 'which parameter need to be changed?'
+		key_para=raw_input()
+		if key_para is None:
+			print 'config done'
+			break
+		print 'input the value'
+		if key_para in ('lda_sequence_min_iter','lda_sequence_max_iter','lda_max_em_iter','rng_seed','initialize_lda'):
+			para[key_para]=int(raw_input())
+		elif key_para in ('alpha','top_chain_var'):
+			para[key_para]=float(raw_input())
+		elif key_para in ('mode','model'):
+			para[key_para]=raw_input()
+
+if para['initialize_lda'] ==0:
+	para['initialize_lda'] = False
+else:
+	para['initialize_lda'] = True
 # 工作路径
 if sys.platform == 'darwin':
     main_path = '/Users/wangzexian/Desktop/dtm/'
@@ -49,8 +85,17 @@ time_series =[int(i) for i in t.read().split()]
 t.close()
 # 建模
 
-model_gen = DtmModel(dtm_path, corpus, time_series, num_topics=num_topics
-                 , initialize_lda=True)
+model_gen = DtmModel(dtm_path, corpus=corpus, time_slices=time_series, mode=para['mode'], 
+				 model=para['model'], num_topics=para['num_topics'], 
+				 id2word=None, prefix=None, 
+				 lda_sequence_min_iter=para['lda_sequence_min_iter'], 
+				 lda_sequence_max_iter=para['lda_sequence_max_iter'], 
+				 lda_max_em_iter=para['lda_max_em_iter'], 
+				 alpha=para['alpha'], 
+				 top_chain_var=para['top_chain_var'], 
+				 rng_seed=para['rng_seed'], 
+				 initialize_lda=para['initialize_lda']
+				 )
 
 # model_gen = LdaSeqModel(corpus = corpus, time_slice=time_series, id2word = dictionary, num_topics = num_topics)
 print 'model training finish'
