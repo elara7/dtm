@@ -11,6 +11,21 @@ Created on Tue Sep 26 14:35:25 2017
 import requests
 import time 
 
+# 工作路径
+if sys.platform == 'darwin':
+    main_path = '/Users/wangzexian/Desktop/dtm/'
+    dtm_path = main_path + 'lib/dtm/main_osx'
+    fastdtm_path = main_path + 'lib/fastdtm/FastDTM_osx'
+elif sys.platform == 'win32':
+    main_path = 'D:/Desktop/dtm/' #win
+elif sys.platform == 'linux2':
+	main_path = '/mnt/d/Desktop/dtm/' 
+	dtm_path = main_path + 'lib/dtm/main_linux'
+	fastdtm_path = main_path + 'lib/fastdtm/FastDTM_linux'
+else:
+    print 'System does not meet'
+
+print 'set path done'
 
 headers = {
     'cache-control': "no-cache",
@@ -21,7 +36,7 @@ url = "http://datainterface.eastmoney.com//EM_DataCenter/js.aspx"
 
 url_table=[]
 #a=1
-for a in range(1,263): #pages
+for a in range(1,266): #pages
     print('start scan page'+str(a))
     querystring = {"type":"SR","sty":"HGYJ","cmd":"4","code":"","ps":"50","p":str(a),"js":"var oCoQmllL={\"data\":[(x)],\"pages\":\"(pc)\",\"update\":\"(ud)\",\"count\":\"(count)\"}","rt":"50193681"}
     response = requests.request("GET", url, headers=headers, params=querystring)
@@ -48,4 +63,4 @@ import pandas as pd
 
 url_data = pd.DataFrame(url_list)
 
-url_data.to_csv('/mnt/c/Users/elara/Documents/url_data.csv',index =False,encoding = 'utf-8')
+url_data.to_csv(main_path + 'crawler/url_data.csv',index =False,encoding = 'utf-8')

@@ -16,7 +16,23 @@ from bs4 import BeautifulSoup
 import sys
 import signal
 
-url_list = pd.read_csv("/mnt/c/Users/elara/Documents/url_data.csv")
+# 工作路径
+if sys.platform == 'darwin':
+    main_path = '/Users/wangzexian/Desktop/dtm/'
+    dtm_path = main_path + 'lib/dtm/main_osx'
+    fastdtm_path = main_path + 'lib/fastdtm/FastDTM_osx'
+elif sys.platform == 'win32':
+    main_path = 'D:/Desktop/dtm/' #win
+elif sys.platform == 'linux2':
+	main_path = '/mnt/d/Desktop/dtm/' 
+	dtm_path = main_path + 'lib/dtm/main_linux'
+	fastdtm_path = main_path + 'lib/fastdtm/FastDTM_linux'
+else:
+    print 'System does not meet'
+
+print 'set path done'
+
+url_list = pd.read_csv(main_path+'crawler/url_data.csv')
 content_list=[]
 error_list=[]
 time_out=3
@@ -54,11 +70,11 @@ for a in range(len(url_list)):
 
 content_data = pd.DataFrame(content_list)
 
-content_data.to_csv('/mnt/c/Users/elara/Documents/content_data.csv',encoding = 'utf-8')
+content_data.to_csv(main_path+'crawler/content_data.csv',encoding = 'utf-8')
 
 error_data = pd.DataFrame(error_list)
 
-error_data.to_csv('/mnt/c/Users/elara/Documents/error_data.csv',encoding = 'utf-8')
+error_data.to_csv(main_path+'crawler/error_data.csv',encoding = 'utf-8')
 
 print 'done'
 

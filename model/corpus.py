@@ -58,7 +58,7 @@ while 1:
     try:
         print i
         f = open(main_path+ unicode('corpus/output/已分词 ' , "utf8") + str(i)+".txt","r")
-        content.append([word for word in [unicode(j,'utf8') for j in f.read().split()] if word not in stop_word and re.search(r'^\d+',word) is None and len(word) > 1 ])
+        content.insert(0,[word for word in [unicode(j,'utf8') for j in f.read().split()] if word not in stop_word and re.search(r'^\d+',word) is None and len(word) > 1 ])
         f.close()
         i = i + 1
     except IOError:
@@ -123,12 +123,16 @@ for i in range(len(raw_content)-1):
         s=s+1
         f1_y = f2_y
         f1_m = f2_m
+    elif (f1_y==f2_y and f1_y==2017 and f1_m==2 and f2_m==1) or (f1_y==f2_y and f1_y==2016 and f1_m==12 and f2_m==11):
+        s=s+1
+        f1_y = f2_y
+        f1_m = f2_m
     else:
-        time_series.append(s)
+        time_series.insert(0,s)
         s=1
         f1_y = f2_y
         f1_m = f2_m
-time_series.append(s)
+time_series.insert(0,s)
 
 print 'time series done'
 
