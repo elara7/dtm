@@ -123,10 +123,10 @@ for i in range(len(raw_content)-1):
         s=s+1
         f1_y = f2_y
         f1_m = f2_m
-    elif (f1_y==f2_y and f1_y==2017 and f1_m==2 and f2_m==1) or (f1_y==f2_y and f1_y==2016 and f1_m==12 and f2_m==11):
-        s=s+1
-        f1_y = f2_y
-        f1_m = f2_m
+        #elif (f1_y==f2_y and f1_y==2017 and f1_m==2 and f2_m==1) or (f1_y==f2_y and f1_y==2016 and f1_m==12 and f2_m==11):
+        #s=s+1
+        #f1_y = f2_y
+        #f1_m = f2_m
     else:
         time_series.insert(0,s)
         s=1
